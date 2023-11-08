@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.13.3/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.13.3/mapbox-gl.js"></script>
+    <title>Vanilla JS Nak Map</title>
+
+    <style></style>
+  </head>
+  <body>
+    <form id="form">
+      <fieldset>
+        <legend>Config</legend>
+
+        <label for="tileStyleUrl">tileStyleUrl: </label>
+        <input type="text" name="tileStyleUrl" class="grow" />
+
+        <button type="submit">submit</button>
+      </fieldset>
+    </form>
+
+    <div id="map" class="grow"></div>
+
+    <script src="js/constants.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
