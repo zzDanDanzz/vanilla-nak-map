@@ -3,7 +3,25 @@ const form = document.getElementById("form");
 let map, tileStyleUrl;
 
 const constants = window.constants;
-const { sourceID, layerID } = constants;
+
+const sourceID = "source-id";
+const layerID = "layer-id";
+
+function waitForStyleToLoad() {
+  return new Promise((resolve, rej) => {
+    if (map && map.isStyleLoaded()) return resolve(true);
+    setTimeout(waitForStyleToLoad, 1000);
+  });
+}
+
+function getTileUrl({ tileStyleUrl, sources }) {
+  const [_sourceID] = Object.keys(sources);
+  const [baseUrl] = tileStyleUrl.split("mym/styles");
+  const SPLIT_STR = "tile/layers/";
+  const [_, path] = tileUrl.split(SPLIT_STR);
+  const [tileUrl] = data.sources[_sourceID].tiles;
+  return `${baseUrl}${SPLIT_STR}${path}`;
+}
 
 const fetchTileStyles = async () => {
   const res = await fetch(tileStyle, {
@@ -67,38 +85,39 @@ function removeFeatures() {
   map.getLayer(layerID) && map.removeLayer(layerID);
 }
 
-function addFeatures() {
-  console.log(
-    "🚀 ~ file: script.js:30 ~ addFeatures ~ tileStyleUrl:",
-    tileStyleUrl
-  );
-  fetch(tileStyleUrl, {
+async function addFeatures() {
+  const res = await fetch(tileStyleUrl, {
     method: "GET",
     headers: {
       "x-api-key": constants["x-api-key"],
     },
   });
-  // map.addSource(window.sourceID, {
-  //   type: "vector",
-  //   url: [tileStyleUrl],
-  // });
 
-  // map.addLayer({
-  //   id: window.layerID,
-  //   "source-layer": "poi_label",
-  //   type: "circle",
-  //   paint: {
-  //     // Mapbox Style Specification paint properties
-  //   },
-  //   layout: {
-  //     // Mapbox Style Specification layout properties
-  //   },
-  // });
-}
+  const { sources, layers } = await res.json();
 
-function updateMap() {
+  const tileUrl = getTileUrl({ tileStyleUrl, sources });
+
+  await waitForStyleToLoad();
+
   removeFeatures();
-  addFeatures();
+
+  map.addSource(sourceID, {
+    type: "vector",
+    url: [tileUrl],
+  });
+
+  // only need the source layer name from the layer data (the rest, we can define as we wish)
+  const sourceLayer = layers[0]["source-layer"];
+
+  map.addLayer({
+    id: layerID,
+    "source-layer": sourceLayer,
+    type: "circle",
+    paint: {
+      "circle-radius": 2,
+      "circle-color": "black",
+    },
+  });
 }
 
 form.addEventListener("submit", (e) => {
@@ -108,7 +127,7 @@ form.addEventListener("submit", (e) => {
   tileStyleUrl = elements.tileStyleUrl.value;
 
   if (map) {
-    updateMap();
+    addFeatures();
   } else {
     initializeMap();
   }
