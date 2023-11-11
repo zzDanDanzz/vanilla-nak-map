@@ -6,7 +6,7 @@ import { getTileUrl, waitForStyleToLoad } from "./utils.js";
 const sourceID = "source-id";
 const layerID = "layer-id";
 
-let map, tileStyleUrl;
+let map, tileStyleUrl, useCache;
 
 // copied from https://docs.mapbox.com/mapbox-gl-js/example/mapbox-gl-rtl-text/
 mapboxgl.setRTLTextPlugin(
@@ -57,7 +57,7 @@ async function addFeatures() {
 
   const { sources, layers } = await res.json();
 
-  const tileUrl = getTileUrl({ tileStyleUrl, sources });
+  const tileUrl = getTileUrl({ tileStyleUrl, sources, useCache });
 
   await waitForStyleToLoad(map);
 
@@ -88,6 +88,7 @@ document.getElementById("form").addEventListener("submit", (e) => {
   const elements = e.target.elements;
 
   tileStyleUrl = elements.tileStyleUrl.value;
+  useCache = elements.useCache.checked;
 
   if (map) {
     addFeatures();
