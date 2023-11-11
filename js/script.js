@@ -2,10 +2,18 @@ import { apiKey } from "../env.js";
 import constants from "./constants.js";
 import { getTileUrl, waitForStyleToLoad } from "./utils.js";
 
+// example source and layer id.
 const sourceID = "source-id";
 const layerID = "layer-id";
 
 let map, tileStyleUrl;
+
+// copied from https://docs.mapbox.com/mapbox-gl-js/example/mapbox-gl-rtl-text/
+mapboxgl.setRTLTextPlugin(
+  "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js",
+  null,
+  true // Lazy load the plugin
+);
 
 function initializeMap() {
   map = new mapboxgl.Map({
