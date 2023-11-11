@@ -9,6 +9,7 @@ export async function waitForStyleToLoad(map) {
   return waitForStyleToLoad(map);
 }
 
+// this transformation probably won't be required later
 export function getTileUrl({ tileStyleUrl, sources }) {
   const [_sourceID] = Object.keys(sources);
   const [baseUrl] = tileStyleUrl.split("mym/styles");

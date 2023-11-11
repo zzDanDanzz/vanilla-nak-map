@@ -1,3 +1,4 @@
+import { apiKey } from "../env.js";
 import constants from "./constants.js";
 import { getTileUrl, waitForStyleToLoad } from "./utils.js";
 
@@ -10,14 +11,24 @@ function initializeMap() {
   map = new mapboxgl.Map({
     container: "map",
     // tiles for the base map
-    style: "https://dev.map.ir/vector/styles/main/mapir-xyz-light-style.json",
+    style: "https://map.ir/vector/styles/main/mapir-xyz-light-style.json",
     center: [51.404887883449874, 35.703222244402],
     zoom: 12,
-    hash:true,
+    hash: true,
     transformRequest: (url) => {
+      // add api key to header when requesting base map tiles
+      if (url.startsWith("https://map.ir")) {
+        return {
+          url,
+          headers: {
+            // YOUR API KEY
+            "x-api-key": apiKey,
+          },
+        };
+      }
+
       return {
         url,
-        headers: { "x-api-key": constants["x-api-key"] },
       };
     },
   });
