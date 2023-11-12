@@ -1,4 +1,3 @@
-import { apiKey } from "../env.js";
 import constants from "./constants.js";
 import { getTileUrl, waitForStyleToLoad } from "./utils.js";
 
@@ -6,7 +5,7 @@ import { getTileUrl, waitForStyleToLoad } from "./utils.js";
 const sourceID = "source-id";
 const layerID = "layer-id";
 
-let map, tileStyleUrl, useCache;
+let map, tileStyleUrl, useCache, apiKey;
 
 // copied from https://docs.mapbox.com/mapbox-gl-js/example/mapbox-gl-rtl-text/
 mapboxgl.setRTLTextPlugin(
@@ -88,6 +87,7 @@ document.getElementById("form").addEventListener("submit", (e) => {
   const elements = e.target.elements;
 
   tileStyleUrl = elements.tileStyleUrl.value;
+  apiKey = elements.apiKey.value;
   useCache = elements.useCache.checked;
 
   if (map) {

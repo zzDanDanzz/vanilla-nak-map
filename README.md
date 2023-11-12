@@ -1,7 +1,5 @@
 # Vanilla JS example 
 
-don't forget to add your api key. (instructions in example.env.js)
-
 ## Glossary
 url: link to public json file with source(s) and layer(s)*
 view state: a convenient zoom/lat/lng to view the data 
