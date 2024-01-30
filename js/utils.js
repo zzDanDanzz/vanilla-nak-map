@@ -11,11 +11,15 @@ export async function waitForStyleToLoad(map) {
 }
 
 export const onQueryRenderedFeatures = () => {
-  const feats = window.map.queryRenderedFeatures({ layers: [constants.layerID] });
+  const feats = window.map.queryRenderedFeatures({
+    layers: [constants.layerID],
+  });
   console.log("🚀 ~ onQueryRenderedFeatures", feats);
 };
 
 export const onQuerySourceFeatures = () => {
-  const feats = window.map.querySourceFeatures(constants.sourceID);
+  const feats = window.map.querySourceFeatures(constants.sourceID, {
+    sourceLayer: "default",
+  });
   console.log("🚀 ~ onQuerySourceFeatures", feats);
 };
