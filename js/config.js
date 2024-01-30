@@ -1,5 +1,5 @@
 const config = {
-  baseUrl: "https://map.ir",
+  baseUrl: "",
   apiKey: "",
 };
 

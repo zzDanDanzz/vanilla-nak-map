@@ -20,7 +20,33 @@ const queryRenderedFeaturesBtn = document.getElementById(
 );
 const querySourceFeaturesBtn = document.getElementById("querySourceFeatures");
 
+function promptForApiKey() {
+  const apiKey = window.prompt("🔑 add your api key:");
+  if (apiKey) {
+    config.apiKey = apiKey;
+  } else {
+    promptForApiKey();
+  }
+}
+
+function promptForBaseUrl() {
+  const baseUrl = window.prompt("🌐 choose a base url for base map:  (suggestion: https://map.ir)");
+  if (baseUrl) {
+    config.baseUrl = baseUrl;
+  } else {
+    promptForBaseUrl();
+  }
+}
+
 function initializeMap() {
+  if (config.apiKey === "") {
+    promptForApiKey();
+  }
+
+  if (config.baseUrl === "") {
+    promptForBaseUrl();
+  }
+
   map = new mapboxgl.Map({
     container: "map",
     // tiles for the base map
