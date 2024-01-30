@@ -1,8 +1,12 @@
 import constants from "./constants.js";
 import config from "./config.js";
-import { waitForStyleToLoad } from "./utils.js";
+import {
+  waitForStyleToLoad,
+  onQueryRenderedFeatures,
+  onQuerySourceFeatures,
+} from "./utils.js";
 
-let map, pbfUrl, useCache, baseMapStylePath;
+let pbfUrl, useCache, baseMapStylePath, map;
 
 // copied from https://docs.mapbox.com/mapbox-gl-js/example/mapbox-gl-rtl-text/
 mapboxgl.setRTLTextPlugin(
@@ -10,6 +14,11 @@ mapboxgl.setRTLTextPlugin(
   null,
   true // Lazy load the plugin
 );
+
+const queryRenderedFeaturesBtn = document.getElementById(
+  "queryRenderedFeatures"
+);
+const querySourceFeaturesBtn = document.getElementById("querySourceFeatures");
 
 function initializeMap() {
   map = new mapboxgl.Map({
@@ -34,6 +43,21 @@ function initializeMap() {
       };
     },
   });
+
+  window.map = map;
+
+  queryRenderedFeaturesBtn.addEventListener("click", onQueryRenderedFeatures);
+  querySourceFeaturesBtn.addEventListener("click", onQuerySourceFeatures);
+}
+
+function removeMap() {
+  map && map?.remove?.();
+  window.map = undefined;
+  queryRenderedFeaturesBtn.removeEventListener(
+    "click",
+    onQueryRenderedFeatures
+  );
+  querySourceFeaturesBtn.removeEventListener("click", onQuerySourceFeatures);
 }
 
 function removeFeatures() {
@@ -71,7 +95,7 @@ document.getElementById("form").addEventListener("submit", (e) => {
   baseMapStylePath = elements.baseMapStylePath.value;
   useCache = elements.useCache.checked;
 
-  map && map?.remove?.();
+  removeMap();
   initializeMap();
   addFeatures();
 });

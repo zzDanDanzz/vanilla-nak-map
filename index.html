@@ -7,11 +7,20 @@
       href="https://api.mapbox.com/mapbox-gl-js/v1.13.3/mapbox-gl.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/style.css" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.13.3/mapbox-gl.js"></script>
     <title>Vanilla JS Nak Map</title>
 
     <style>
+      * {
+        margin: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+      }
+
       .config-container {
         display: flex;
         flex-direction: column;
@@ -28,10 +37,24 @@
         align-self: flex-start;
         width: 7rem;
       }
+
+      .group {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .main-container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .grow {
+        flex-grow: 1;
+      }
     </style>
   </head>
 
-  <body>
+  <body class="main-container">
     <form id="form">
       <fieldset>
         <legend>Config</legend>
@@ -60,6 +83,12 @@
         </div>
       </fieldset>
     </form>
+
+    <div class="group">
+      <h4>querying features:</h4>
+      <button id="queryRenderedFeatures">queryRenderedFeatures</button>
+      <button id="querySourceFeatures">querySourceFeatures</button>
+    </div>
 
     <div id="map" class="grow"></div>
     <script src="js/script.js" type="module"></script>
