@@ -5,7 +5,7 @@ const circleColor = [
   [
     "interpolate",
     ["linear"],
-    ["get", "rxlevel"],
+    ["to-number", ["get", "rxlevel"]],
     -100,
     "#7FFF00",
     -75,
