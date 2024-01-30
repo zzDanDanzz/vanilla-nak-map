@@ -1,11 +1,8 @@
 import constants from "./constants.js";
-import { getTileUrl, waitForStyleToLoad } from "./utils.js";
+import config from "./config.js";
+import { waitForStyleToLoad } from "./utils.js";
 
-// example source and layer id.
-const sourceID = "source-id";
-const layerID = "layer-id";
-
-let map, tileStyleUrl, useCache, apiKey;
+let map, pbfUrl, useCache, baseMapStylePath;
 
 // copied from https://docs.mapbox.com/mapbox-gl-js/example/mapbox-gl-rtl-text/
 mapboxgl.setRTLTextPlugin(
@@ -18,62 +15,46 @@ function initializeMap() {
   map = new mapboxgl.Map({
     container: "map",
     // tiles for the base map
-    style: "https://map.ir/vector/styles/main/mapir-xyz-light-style.json",
+    style: config.baseUrl + baseMapStylePath,
     center: [51.404887883449874, 35.703222244402],
     zoom: 12,
     hash: true,
     transformRequest: (url) => {
-      // add api key to header when requesting base map tiles
-      if (url.startsWith("https://map.ir")) {
-        return {
-          url,
-          headers: {
-            // YOUR API KEY
-            "x-api-key": apiKey,
-          },
-        };
-      }
+      const isBaseMapTile = url.startsWith(config.baseUrl);
+
+      const headers = isBaseMapTile
+        ? {
+            "x-api-key": config.apiKey,
+          }
+        : {};
 
       return {
         url,
+        headers,
       };
     },
   });
 }
 
 function removeFeatures() {
-  map.getLayer(layerID) && map.removeLayer(layerID);
-  map.getSource(sourceID) && map.removeSource(sourceID);
+  map.getLayer(constants.layerID) && map.removeLayer(constants.layerID);
+  map.getSource(constants.sourceID) && map.removeSource(constants.sourceID);
 }
 
 async function addFeatures() {
-  const res = await fetch(tileStyleUrl, {
-    method: "GET",
-    headers: {
-      "x-api-key": constants["x-api-key"],
-    },
-  });
-
-  const { sources, layers } = await res.json();
-
-  const tileUrl = getTileUrl({ tileStyleUrl, sources, useCache });
-
   await waitForStyleToLoad(map);
 
   removeFeatures();
 
-  map.addSource(sourceID, {
+  map.addSource(constants.sourceID, {
     type: "vector",
-    tiles: [tileUrl],
+    tiles: [pbfUrl + "?data_from_cache=" + (useCache ? "1" : "0")],
   });
 
-  // only need the source layer name from the layer data (the rest, we can define as we wish)
-  const sourceLayer = layers[0]["source-layer"];
-
   map.addLayer({
-    id: layerID,
-    source: sourceID,
-    "source-layer": sourceLayer,
+    id: constants.layerID,
+    source: constants.sourceID,
+    "source-layer": "default",
     type: "circle",
     paint: {
       "circle-radius": 5,
@@ -86,14 +67,11 @@ document.getElementById("form").addEventListener("submit", (e) => {
   e.preventDefault();
   const elements = e.target.elements;
 
-  tileStyleUrl = elements.tileStyleUrl.value;
-  apiKey = elements.apiKey.value;
+  pbfUrl = elements.pbfUrl.value;
+  baseMapStylePath = elements.baseMapStylePath.value;
   useCache = elements.useCache.checked;
 
-  if (map) {
-    addFeatures();
-  } else {
-    initializeMap();
-    addFeatures();
-  }
+  map && map?.remove?.();
+  initializeMap();
+  addFeatures();
 });

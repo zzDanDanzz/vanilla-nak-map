@@ -1,4 +1,4 @@
-// uses MAPBOX EXPRESSIONS 
+// uses MAPBOX EXPRESSIONS
 const circleColor = [
   "case",
   ["has", "rxlevel"],
@@ -24,6 +24,8 @@ const circleColor = [
 
 const constants = {
   "circle-color": circleColor,
+  sourceID: "source-id",
+  layerID: "layer-id",
 };
 
 export default constants;

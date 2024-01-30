@@ -11,23 +11,53 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.13.3/mapbox-gl.js"></script>
     <title>Vanilla JS Nak Map</title>
 
-    <style></style>
+    <style>
+      .config-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 0.7rem;
+      }
+
+      .row {
+        display: flex;
+        gap: 0.6rem;
+      }
+
+      .submit {
+        align-self: flex-start;
+        width: 7rem;
+      }
+    </style>
   </head>
+
   <body>
     <form id="form">
       <fieldset>
         <legend>Config</legend>
 
-        <label for="apiKey">apiKey: </label>
-        <input type="text" name="apiKey" id="apiKey" class="grow" />
-
-        <label for="tileStyleUrl">tileStyleUrl: </label>
-        <input type="text" name="tileStyleUrl" id="tileStyleUrl" class="grow" />
-
-        <label for="useCache">useCache: </label>
-        <input type="checkbox" name="useCache" id="useCache"  />
-
-        <button type="submit">submit</button>
+        <div class="config-container">
+          <div class="row">
+            <label for="baseMapStylePath">baseMapStylePath: </label>
+            <input
+              type="text"
+              name="baseMapStylePath"
+              id="baseMapStylePath"
+              class="grow"
+              value="/vector/styles/main/mapir-xyz-light-style.json"
+            />
+            <span>(change base url in config.js)</span>
+          </div>
+          <div class="row">
+            <label for="pbfUrl">pbfUrl: </label>
+            <input type="text" name="pbfUrl" id="pbfUrl" class="grow" />
+          </div>
+          <div>
+            <label for="useCache">useCache: </label>
+            <input type="checkbox" name="useCache" id="useCache" />
+          </div>
+          <button type="submit" class="submit">submit</button>
+        </div>
       </fieldset>
     </form>
 
