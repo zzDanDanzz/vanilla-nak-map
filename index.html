@@ -61,15 +61,30 @@
 
         <div class="config-container">
           <div class="row">
-            <label for="baseMapStylePath">baseMapStylePath: </label>
-            <input
-              type="text"
-              name="baseMapStylePath"
-              id="baseMapStylePath"
-              class="grow"
-              value="/vector/styles/main/mapir-xyz-light-style.json"
-            />
-            <span>(change base url in config.js)</span>
+            <label for="baseMapStyle">baseMapStyle:</label>
+            <select name="baseMapStyle" id="baseMapStyle">
+              <option value="vector__mapir-xyz-style">mapir-xyz-style</option>
+              <option value="vector__mapir-style-dark">mapir-style-dark</option>
+              <option value="vector__mapir-xyz-light-style">
+                mapir-xyz-light-style
+              </option>
+              <option value="vector__mapir-Dove-style">mapir-Dove-style</option>
+              <option value="vector__mapir-frank-style">
+                mapir-frank-style
+              </option>
+              <option value="raster__mapir-raster">mapir-raster</option>
+              <option value="raster__google-satellite">google-satellite</option>
+              <option value="raster__google-satellite-label">
+                google-satellite-label
+              </option>
+              <option value="raster__google-terrain-label">
+                google-terrain-label
+              </option>
+              <option value="raster__google-terrain-traffic-label">
+                google-terrain-traffic-label
+              </option>
+              <option value="raster__osm-raster">osm-raster</option>
+            </select>
           </div>
           <div class="row">
             <label for="pbfUrl">pbfUrl: </label>
@@ -91,6 +106,6 @@
     </div>
 
     <div id="map" class="grow"></div>
-    <script src="js/script.js" type="module"></script>
+    <script src="./js/script.js" type="module"></script>
   </body>
 </html>

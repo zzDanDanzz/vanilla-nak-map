@@ -4,9 +4,10 @@ import {
   waitForStyleToLoad,
   onQueryRenderedFeatures,
   onQuerySourceFeatures,
+  generateMapStyle
 } from "./utils.js";
 
-let pbfUrl, useCache, baseMapStylePath, map;
+let pbfUrl, useCache, baseMapStyle, map;
 
 // copied from https://docs.mapbox.com/mapbox-gl-js/example/mapbox-gl-rtl-text/
 mapboxgl.setRTLTextPlugin(
@@ -30,7 +31,9 @@ function promptForApiKey() {
 }
 
 function promptForBaseUrl() {
-  const baseUrl = window.prompt("🌐 choose a base url for base map:  (suggestion: https://map.ir)");
+  const baseUrl = window.prompt(
+    "🌐 choose a base url for base map:  (suggestion: https://map.ir)"
+  );
   if (baseUrl) {
     config.baseUrl = baseUrl;
   } else {
@@ -47,10 +50,12 @@ function initializeMap() {
     promptForBaseUrl();
   }
 
+  const [type, sourceID] = baseMapStyle.split("__");
+
   map = new mapboxgl.Map({
     container: "map",
     // tiles for the base map
-    style: config.baseUrl + baseMapStylePath,
+    style: generateMapStyle({ type, sourceID }),
     center: [51.404887883449874, 35.703222244402],
     zoom: 12,
     hash: true,
@@ -118,7 +123,7 @@ document.getElementById("form").addEventListener("submit", (e) => {
   const elements = e.target.elements;
 
   pbfUrl = elements.pbfUrl.value;
-  baseMapStylePath = elements.baseMapStylePath.value;
+  baseMapStyle = elements.baseMapStyle.value;
   useCache = elements.useCache.checked;
 
   removeMap();
